@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.revature.models.AccountStatus;
+import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.utils.ConnectionUtil;
 
@@ -51,13 +52,11 @@ public class UserDAOImpl implements UserDAO{
 	public boolean updateUser(User u) {
 		try (Connection conn = ConnectionUtil.getConnection()) {
 			String sql = "UPDATE users " + "SET username = ?, " + "userpassword = ?, " + "firstName = ?, " + "lastName = ?, " +
-					"email = ? " + 
-					//"roleid = ? " + 
+					"email = ?, " + 
+					"roleid = ? " + 
 					"WHERE userid = ?;";
 					
 					
-					
-					;
 			PreparedStatement statement = conn.prepareStatement(sql);
 			int index = 0;
 			statement.setString(++index, u.getUsername());
@@ -65,7 +64,8 @@ public class UserDAOImpl implements UserDAO{
 			statement.setString(++index, u.getFirstName());
 			statement.setString(++index, u.getLastName());
 			statement.setString(++index, u.getEmail());
-			//statement.setInt(++index, u.getRole().getRoleId());
+			statement.setInt(++index, u.getRole().getRoleId());
+			
 			
 			
 			statement.setInt(++index, u.getUserId());
@@ -94,9 +94,9 @@ public class UserDAOImpl implements UserDAO{
 			User u = new User();
 
 			while (result.next()) {
-				u.setUserId(result.getInt(id));
+				u.setUserId(result.getInt("userid"));
 				u.setUsername(result.getString("username"));
-				u.setPassword(result.getString("password"));
+				u.setPassword(result.getString("userpassword"));
 				u.setFirstName(result.getString("firstname"));
 				u.setLastName(result.getString("lastname"));
 				u.setEmail(result.getString("email"));

@@ -36,7 +36,7 @@ public class AccountServlet extends HttpServlet{
 	
 	
 	
-	/*protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		StringBuilder sb = new StringBuilder();
 		
 		//The request object has a built in method to return an object that can read the body line by line. 
@@ -54,9 +54,9 @@ public class AccountServlet extends HttpServlet{
 		
 		
 		//Jackson will convert the json that is in the body to a java object we tell it to. 
-		User u = om.readValue(body, User.class);
+		Account a = om.readValue(body, Account.class);
 		
-		if (uService.register(u)) {
+		if (aService.submitAccount(a)) {
 			resp.setStatus(201);
 		}else {
 			resp.setStatus(400);
@@ -81,13 +81,13 @@ public class AccountServlet extends HttpServlet{
 			
 			
 			//Jackson will convert the json that is in the body to a java object we tell it to. 
-			User u = om.readValue(body, User.class);
+			Account a = om.readValue(body, Account.class);
 			
-			if (uService.update(u)) {
+			if (aService.updateAccount(a)) {
 				resp.setStatus(201);
 			}else {
 				resp.setStatus(400);
 			}
-		}*/
+		}
 
 }

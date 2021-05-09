@@ -25,8 +25,8 @@ public class AccountTypesDAOImpl implements AccountTypesDAO{
 			AccountType type = new AccountType();
 
 			while (result.next()) {
-				type.setTypeId(id);
-				type.setType("typename");
+				type.setTypeId(result.getInt("typeid"));
+				type.setType(result.getString("typename"));
 			}
 
 			return type;

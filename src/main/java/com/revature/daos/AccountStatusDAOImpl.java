@@ -25,7 +25,7 @@ public class AccountStatusDAOImpl implements AccountStatusDAO{
 			AccountStatus status = new AccountStatus();
 
 			while (result.next()) {
-				status.setStatusId(id);
+				status.setStatusId(result.getInt("statusid"));
 				status.setStatus(result.getString("statusname"));
 			}
 
@@ -52,7 +52,7 @@ public class AccountStatusDAOImpl implements AccountStatusDAO{
 
 			while (result.next()) {
 				status.setStatusId(result.getInt("statusid"));
-				status.setStatus(statusName);
+				status.setStatus(result.getString("statusname"));
 			}
 
 			return status;

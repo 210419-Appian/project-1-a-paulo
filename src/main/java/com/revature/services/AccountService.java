@@ -13,5 +13,13 @@ public class AccountService {
 	public List<Account> findAccounts(){
 		return aDao.findAccounts();
 	}
+	
+	public boolean submitAccount(Account a){
+		return aDao.submitAccount(a);
+	}
+	
+	public boolean updateAccount(Account a){
+		return aDao.updateAccount(a);
+	}
 
 }

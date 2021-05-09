@@ -24,13 +24,9 @@ public class AccountDAOImpl implements AccountDAO{
 	@Override
 	public List<Account> findAccounts() {
 		try (Connection conn = ConnectionUtil.getConnection()) {
-
 			String sql = "SELECT * FROM accounts;";
-
 			Statement statement = conn.createStatement();
-
 			ResultSet result = statement.executeQuery(sql);
-
 			List<Account> list = new ArrayList<>();
 
 			while (result.next()) {
@@ -59,33 +55,72 @@ public class AccountDAOImpl implements AccountDAO{
 
 	@Override
 	public boolean submitAccount(Account a) {
-		// TODO Auto-generated method stub
+		try (Connection conn = ConnectionUtil.getConnection()) {
+
+			//There is no chance for sql injection with just an integer so this is safe. 
+			String sql = "INSERT INTO accounts (balance, userid, statusid, typeid)"
+					+ "	VALUES (?, ?, ?, ?);";
+
+			
+			PreparedStatement statement = conn.prepareStatement(sql);
+
+			int index = 0;
+			statement.setDouble(++index, a.getBalance());
+			statement.setInt(++index, a.getUser().getUserId());
+			statement.setInt(++index, a.getStatus().getStatusId());
+			statement.setInt(++index, a.getType().getTypeId());
+			//statement.setString(++index, u.getEmail());
+			//statement.setInt(++index, u.getRole().getRoleId());//need to convert role to intID
+			
+			statement.execute();
+			return true;
+
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
 	public boolean updateAccount(Account a) {
-		// TODO Auto-generated method stub
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "UPDATE accounts " + "SET userid = ?, " + "statusid = ?, " + "typeid = ? " +
+					"WHERE accountid = ?;";
+					
+			PreparedStatement statement = conn.prepareStatement(sql);
+			
+			int index = 0;
+			
+			statement.setInt(++index, a.getUser().getUserId());
+			statement.setInt(++index, a.getStatus().getStatusId());
+			statement.setInt(++index, a.getType().getTypeId());
+			
+			
+			statement.setInt(++index, a.getAccountId());
+			
+			statement.execute();
+			return true;
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
 	public Account findAccountsById(int id) {
 		try (Connection conn = ConnectionUtil.getConnection()) {
-
 			String sql = "SELECT * FROM accounts WHERE accountid = ?;";
-
 			PreparedStatement statement = conn.prepareStatement(sql);
-			
 			statement.setInt(1, id);
-
 			ResultSet result = statement.executeQuery();
 
 			//User u = new User();
 			Account a = new Account();
 
 			while (result.next()) {
-				a.setAccountId(id);
+				a.setAccountId(result.getInt("accountid"));
 				a.setBalance(result.getDouble("balance"));
 				int uId = result.getInt("userid");
 				a.setUser(uDao.findUserById(uId));;
@@ -105,15 +140,10 @@ public class AccountDAOImpl implements AccountDAO{
 	@Override
 	public Account findAccountsByStatus(AccountStatus status) {
 		try (Connection conn = ConnectionUtil.getConnection()) {
-
 			String sql = "SELECT * FROM accounts WHERE statusid = ?;";
-
 			PreparedStatement statement = conn.prepareStatement(sql);
-			
 			int statusid = status.getStatusId();
-			
 			statement.setInt(1, statusid);
-
 			ResultSet result = statement.executeQuery();
 
 			//User u = new User();
@@ -140,15 +170,10 @@ public class AccountDAOImpl implements AccountDAO{
 	@Override
 	public Account findAccountsByUser(User u) {
 		try (Connection conn = ConnectionUtil.getConnection()) {
-
 			String sql = "SELECT * FROM accounts WHERE userid = ?;";
-
 			PreparedStatement statement = conn.prepareStatement(sql);
-			
 			int userid = u.getUserId();
-			
 			statement.setInt(1, userid);
-
 			ResultSet result = statement.executeQuery();
 
 			//User u = new User();
@@ -171,7 +196,6 @@ public class AccountDAOImpl implements AccountDAO{
 		}
 		return null;
 	}
-	
 	
 	
 
