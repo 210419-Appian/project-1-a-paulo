@@ -33,29 +33,29 @@ public class AccountServlet extends HttpServlet{
 		String[] sections = url.split("/");
 		String json = null;
 		
-		System.out.println(url);
-		System.out.println(sections.length);
+		//System.out.println(url);
+		//System.out.println(sections.length);
 		
 		if(sections.length == 3) {
-			List<Account> list = aService.findAccounts();
+			List<Account> list = aService.findAccounts(req, resp);
 			json = om.writeValueAsString(list);
 		}
 		else if(sections.length == 4) {
 			int id = Integer.parseInt(sections[3]);
-			Account a = aService.findAccountsById(id);
+			Account a = aService.findAccountsById(id, req, resp);
 			json = om.writeValueAsString(a);
 		}
 		else if(sections.length == 5  && sections[3].equalsIgnoreCase("owner")) {
 			int id = Integer.parseInt(sections[4]);
 			//System.out.println(id);
-			Account a = aService.findAccountsByUserId(id);
+			Account a = aService.findAccountsByUserId(id, req, resp);
 			json = om.writeValueAsString(a);
 			//System.out.println("in right loop");	
 		}
 		else if(sections.length == 5  && sections[3].equalsIgnoreCase("status")) {
 			int id = Integer.parseInt(sections[4]);
-			Account a = aService.findAccountsByStatus(id);
-			json = om.writeValueAsString(a);
+			List<Account> list = aService.findAccountsByStatus(id, req, resp);
+			json = om.writeValueAsString(list);
 		}
 		System.out.println(json);
 		PrintWriter pw = resp.getWriter();
@@ -84,7 +84,7 @@ public class AccountServlet extends HttpServlet{
 		//Jackson will convert the json that is in the body to a java object we tell it to. 
 		Account a = om.readValue(body, Account.class);
 		
-		if (aService.submitAccount(a)) {
+		if (aService.submitAccount(a, req, resp)) {
 			resp.setStatus(201);
 		}else {
 			resp.setStatus(400);
@@ -111,7 +111,7 @@ public class AccountServlet extends HttpServlet{
 			//Jackson will convert the json that is in the body to a java object we tell it to. 
 			Account a = om.readValue(body, Account.class);
 			
-			if (aService.updateAccount(a)) {
+			if (aService.updateAccount(a, req, resp)) {
 				resp.setStatus(201);
 			}else {
 				resp.setStatus(400);
@@ -147,31 +147,31 @@ public class AccountServlet extends HttpServlet{
 				//System.out.println(aService.findAccountsByUserId(bal.accountId).getBalance());
 				//System.out.println(bal.balance);
 				//System.out.println(aService.findAccountsByUserId(bal.accountId).toString());
-				Account a = aService.findAccountsById(bal.accountId);
+				Account a = aService.findAccountsById(bal.accountId, req, resp);
 				a.setBalance((a.getBalance()) - bal.balance);
-				aService.updateAccountBalance(a,req);
+				aService.updateAccountBalance(a, req, resp);
 				String message = new String("message :" + bal.balance + " has been withdrawn from Account " + bal.accountId);
 				out.print(message);
 				
 			}
 			else if(sections[3].equalsIgnoreCase("deposit")) {
 				bal = om.readValue(body, BalanceDTO.class);
-				Account a = aService.findAccountsById(bal.accountId);
+				Account a = aService.findAccountsById(bal.accountId, req, resp);
 				a.setBalance((a.getBalance()) + bal.balance);
-				aService.updateAccountBalance(a,req);
-				String message = new String("message :" + bal.balance + " has been deposited from Account " + bal.accountId);
+				aService.updateAccountBalance(a, req, resp);
+				String message = new String("message :" + bal.balance + " has been deposited to Account " + bal.accountId);
 				out.print(message);
 			}
 			else if(sections[3].equalsIgnoreCase("transfer")) {
 				trans = om.readValue(body, TransferDTO.class);
-				Account a = aService.findAccountsById(trans.sourceAccountId);
-				Account b = aService.findAccountsById(trans.targetAccountId);
+				Account a = aService.findAccountsById(trans.sourceAccountId, req, resp);
+				Account b = aService.findAccountsById(trans.targetAccountId, req, resp);
 				
 				//System.out.println(aDao.findAccountsByUserId(trans.targetAccountId).getBalance());
 				a.setBalance(a.getBalance() - trans.amount);
 				b.setBalance(b.getBalance() + trans.amount);
-				aService.updateAccountBalance(a,req);
-				aService.updateAccountBalance(b,req);
+				aService.updateAccountBalance(a, req, resp);
+				aService.updateAccountBalance(b, req, resp);
 				String message = new String("message :" + trans.amount + " has been transferred from Account " + trans.sourceAccountId +
 						"to Account" + trans.targetAccountId);
 				out.print(message);

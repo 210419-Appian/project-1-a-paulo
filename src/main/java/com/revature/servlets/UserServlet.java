@@ -33,12 +33,12 @@ public class UserServlet extends HttpServlet{
 		//System.out.println(sections.length);
 		
 		if(sections.length == 3) {
-			List<User> list = uService.findUsers();
+			List<User> list = uService.findUsers(req, resp);
 			json = om.writeValueAsString(list);
 		}
 		else if(sections.length == 4) {
 			int id = Integer.parseInt(sections[3]);
-			User u = uService.findUserById(id);
+			User u = uService.findUserById(id, req, resp);
 			json = om.writeValueAsString(u);
 		}
 		System.out.println(json);
@@ -94,12 +94,13 @@ public class UserServlet extends HttpServlet{
 			
 			//Jackson will convert the json that is in the body to a java object we tell it to. 
 			User u = om.readValue(body, User.class);
+			uService.update(u, req, resp);
 			
-			if (uService.update(u, req)) {
+			/*if (uService.update(u, req, resp)) {
 				resp.setStatus(201);
 			}else {
 				resp.setStatus(400);
-			}
+			}*/
 		}
 		
 }

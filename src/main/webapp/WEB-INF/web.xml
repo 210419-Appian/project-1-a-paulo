@@ -40,6 +40,12 @@
   <servlet-class>com.revature.servlets.RegisterServlet</servlet-class>
   </servlet>
   
+  <servlet>
+  <servlet-name>PassTimeServlet</servlet-name>
+  <display-name>PassTimeServlet</display-name>
+  <servlet-class>com.revature.servlets.PassTimeServlet</servlet-class>
+  </servlet>
+  
   
   
   <servlet-mapping>
@@ -66,6 +72,11 @@
   <servlet-mapping>
   <servlet-name>RegisterServlet</servlet-name>
   <url-pattern>/register</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  <servlet-name>PassTimeServlet</servlet-name>
+  <url-pattern>/passTime</url-pattern>
   </servlet-mapping>
   
   

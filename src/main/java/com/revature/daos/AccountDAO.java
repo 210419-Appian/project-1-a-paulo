@@ -12,7 +12,8 @@ public interface AccountDAO {
 	
 	public List<Account> findAccounts();
 	public Account findAccountsById(int id);
-	public Account findAccountsByStatus(int id);
+	public List<Account> findAccountsByStatus(int id);
+	public List<Account> findAccountsByType(int id);
 	public Account findAccountsByUserId(int id);
 	public boolean submitAccount(Account a);
 	public boolean updateAccount(Account a);

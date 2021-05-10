@@ -138,29 +138,32 @@ public class AccountDAOImpl implements AccountDAO{
 	}
 
 	@Override
-	public Account findAccountsByStatus(int id) {
+	public List<Account> findAccountsByStatus(int id) {
 		try (Connection conn = ConnectionUtil.getConnection()) {
 			String sql = "SELECT * FROM accounts WHERE statusid = ?;";
 			PreparedStatement statement = conn.prepareStatement(sql);
 			//int statusid = status.getStatusId();
 			statement.setInt(1, id);
 			ResultSet result = statement.executeQuery();
+			List<Account> list = new ArrayList<>();
 
 			//User u = new User();
-			Account a = new Account();
+			//Account a = null;
 
 			while (result.next()) {
-				a.setAccountId(result.getInt("accountid"));
-				a.setBalance(result.getDouble("balance"));
 				int uId = result.getInt("userid");
-				a.setUser(uDao.findUserById(uId));;
 				int sId = result.getInt("statusid");
-				a.setStatus(sDao.findByStatusId(sId));
 				int tId = result.getInt("typeid");
-				a.setType(tDao.findByTypeId(tId));
+				Account a = new Account(
+				result.getInt("accountid"),
+				result.getDouble("balance"),
+				uDao.findUserById(uId),
+				sDao.findByStatusId(sId),		
+				tDao.findByTypeId(tId));
+				list.add(a);
 			}
 
-			return a;
+			return list;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -223,6 +226,39 @@ public class AccountDAOImpl implements AccountDAO{
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	@Override
+	public List<Account> findAccountsByType(int id) {
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "SELECT * FROM accounts WHERE typeid = ?;";
+			PreparedStatement statement = conn.prepareStatement(sql);
+			//int statusid = status.getStatusId();
+			statement.setInt(1, id);
+			ResultSet result = statement.executeQuery();
+			List<Account> list = new ArrayList<>();
+
+			//User u = new User();
+			//Account a = null;
+
+			while (result.next()) {
+				int uId = result.getInt("userid");
+				int sId = result.getInt("statusid");
+				int tId = result.getInt("typeid");
+				Account a = new Account(
+				result.getInt("accountid"),
+				result.getDouble("balance"),
+				uDao.findUserById(uId),
+				sDao.findByStatusId(sId),		
+				tDao.findByTypeId(tId));
+				list.add(a);
+			}
+
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	
