@@ -197,6 +197,33 @@ public class AccountDAOImpl implements AccountDAO{
 		}
 		return null;
 	}
+
+	@Override
+	public boolean updateAccountBalance(Account a) {
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "UPDATE accounts " + "SET balance = ? " +
+					"WHERE accountid = ?;";
+					
+			PreparedStatement statement = conn.prepareStatement(sql);
+			
+			int index = 0;
+			
+			statement.setDouble(++index, a.getBalance());
+			//statement.setInt(++index, a.getUser().getUserId());
+			//statement.setInt(++index, a.getStatus().getStatusId());
+			//statement.setInt(++index, a.getType().getTypeId());
+			
+			
+			statement.setInt(++index, a.getAccountId());
+			
+			statement.execute();
+			return true;
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 	
 	
 

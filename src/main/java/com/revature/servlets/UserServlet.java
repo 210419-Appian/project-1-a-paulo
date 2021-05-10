@@ -95,7 +95,7 @@ public class UserServlet extends HttpServlet{
 			//Jackson will convert the json that is in the body to a java object we tell it to. 
 			User u = om.readValue(body, User.class);
 			
-			if (uService.update(u)) {
+			if (uService.update(u, req)) {
 				resp.setStatus(201);
 			}else {
 				resp.setStatus(400);

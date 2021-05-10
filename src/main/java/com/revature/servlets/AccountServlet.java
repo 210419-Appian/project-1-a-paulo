@@ -145,21 +145,41 @@ public class AccountServlet extends HttpServlet{
 			System.out.println(sections.length);
 			
 			String body = new String(sb);
-			bal = om.readValue(body, BalanceDTO.class);
+			//bal = om.readValue(body, BalanceDTO.class);
+			
 			
 			if(sections[3].equalsIgnoreCase("withdraw")) {
-				aService.findAccountsByUserId(bal.accountId).setBalance(aDao.findAccountsByUserId(bal.accountId).getBalance()-
-						bal.balance);
+				bal = om.readValue(body, BalanceDTO.class);
+				//System.out.println(aService.findAccountsByUserId(bal.accountId).getBalance());
+				//System.out.println(bal.balance);
+				//System.out.println(aService.findAccountsByUserId(bal.accountId).toString());
+				//aService.findAccountsByUserId(bal.accountId).setBalance((aService.findAccountsByUserId(bal.accountId).getBalance()) - bal.balance);
+				//aService.updateAccountBalance(aService.findAccountsByUserId(bal.accountId));
+				Account a = aService.findAccountsById(bal.accountId);
+				a.setBalance((a.getBalance()) - bal.balance);
+				//aService.updateAccountBalance(a);
+				aService.updateAccountBalance(a,req);
 			}
 			else if(sections[3].equalsIgnoreCase("deposit")) {
-				aService.findAccountsByUserId(bal.accountId).setBalance(aDao.findAccountsByUserId(bal.accountId).getBalance()+
-						bal.balance);
+				bal = om.readValue(body, BalanceDTO.class);
+				Account a = aService.findAccountsById(bal.accountId);
+				a.setBalance((a.getBalance()) + bal.balance);
+				//aService.findAccountsByUserId(bal.accountId).setBalance(aDao.findAccountsByUserId(bal.accountId).getBalance() + bal.balance);
+				aService.updateAccountBalance(a,req);
 			}
 			else if(sections[3].equalsIgnoreCase("transfer")) {
-				aService.findAccountsById(trans.sourceAccountId).setBalance(aDao.findAccountsByUserId(trans.sourceAccountId).getBalance()-
-						trans.amount);
-				aService.findAccountsById(trans.targetAccountId).setBalance(aDao.findAccountsByUserId(trans.targetAccountId).getBalance()+
-						trans.amount);
+				trans = om.readValue(body, TransferDTO.class);
+				Account a = aService.findAccountsById(trans.sourceAccountId);
+				Account b = aService.findAccountsById(trans.targetAccountId);
+				
+				//System.out.println(aDao.findAccountsByUserId(trans.targetAccountId).getBalance());
+				
+				//a.setBalance(aDao.findAccountsByUserId(trans.sourceAccountId).getBalance() - trans.amount);
+				//b.setBalance(aDao.findAccountsByUserId(trans.targetAccountId).getBalance() + trans.amount);
+				a.setBalance(a.getBalance() - trans.amount);
+				b.setBalance(b.getBalance() + trans.amount);
+				aService.updateAccountBalance(a,req);
+				aService.updateAccountBalance(b,req);
 			}
 		}
 		

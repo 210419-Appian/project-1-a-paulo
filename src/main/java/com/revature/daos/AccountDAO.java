@@ -16,7 +16,7 @@ public interface AccountDAO {
 	public Account findAccountsByUserId(int id);
 	public boolean submitAccount(Account a);
 	public boolean updateAccount(Account a);
-	
+	public boolean updateAccountBalance(Account a);
 	
 	
 	

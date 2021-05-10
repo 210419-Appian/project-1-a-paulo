@@ -17,18 +17,18 @@ public class UserService {
 		return uDao.addUser(u);
 	}
 	
-	/*public boolean update(User u, HttpServletRequest req) {
+	public boolean update(User u, HttpServletRequest req) {
 		HttpSession ses = req.getSession();
 		String sessionname = (String) ses.getAttribute("username");
 		if(uDao.findUserByUsername(sessionname).getRole().getRoleId() == 4 || uDao.findUserByUsername(sessionname).getUserId() == u.getUserId()) {
 			return uDao.updateUser(u);
 		}
 		return false;
-	}*/
-	
-	public boolean update(User u) {
-		return uDao.updateUser(u);
 	}
+	
+	/*public boolean update(User u) {
+		return uDao.updateUser(u);
+	}*/
 	
 	public List<User> findUsers(){
 		return uDao.findUsers();

@@ -5,7 +5,9 @@ public class Account {
     private int accountId; // primary key
     private double balance;  // not null
     private User user;
-    private AccountStatus status;
+    
+
+	private AccountStatus status;
     private AccountType type;
 
 
@@ -61,7 +63,11 @@ public class Account {
 		this.user = user;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "Account [accountId=" + accountId + ", balance=" + balance + ", user=" + user + ", status=" + status
+				+ ", type=" + type + "]";
+	}
     
 
 	
