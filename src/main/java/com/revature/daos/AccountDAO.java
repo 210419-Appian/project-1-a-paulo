@@ -12,10 +12,12 @@ public interface AccountDAO {
 	
 	public List<Account> findAccounts();
 	public Account findAccountsById(int id);
-	public Account findAccountsByStatus(AccountStatus status);
-	public Account findAccountsByUser(User u);
+	public Account findAccountsByStatus(int id);
+	public Account findAccountsByUserId(int id);
 	public boolean submitAccount(Account a);
 	public boolean updateAccount(Account a);
+	
+	
 	
 	
 	//public Account findAccountsByAccountId(int id);

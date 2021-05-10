@@ -21,5 +21,18 @@ public class AccountService {
 	public boolean updateAccount(Account a){
 		return aDao.updateAccount(a);
 	}
+	
+	public Account findAccountsById(int id) {
+		return aDao.findAccountsById(id);
+	}
+	
+	public Account findAccountsByStatus(int id) {
+		return aDao.findAccountsByStatus(id);
+	}
+	
+	public Account findAccountsByUserId(int id) {
+		return aDao.findAccountsByUserId(id);
+		
+	}
 
 }

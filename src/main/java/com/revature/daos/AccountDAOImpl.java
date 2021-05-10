@@ -138,12 +138,12 @@ public class AccountDAOImpl implements AccountDAO{
 	}
 
 	@Override
-	public Account findAccountsByStatus(AccountStatus status) {
+	public Account findAccountsByStatus(int id) {
 		try (Connection conn = ConnectionUtil.getConnection()) {
 			String sql = "SELECT * FROM accounts WHERE statusid = ?;";
 			PreparedStatement statement = conn.prepareStatement(sql);
-			int statusid = status.getStatusId();
-			statement.setInt(1, statusid);
+			//int statusid = status.getStatusId();
+			statement.setInt(1, id);
 			ResultSet result = statement.executeQuery();
 
 			//User u = new User();
@@ -168,11 +168,12 @@ public class AccountDAOImpl implements AccountDAO{
 	}
 
 	@Override
-	public Account findAccountsByUser(User u) {
+	public Account findAccountsByUserId(int id) {
 		try (Connection conn = ConnectionUtil.getConnection()) {
 			String sql = "SELECT * FROM accounts WHERE userid = ?;";
 			PreparedStatement statement = conn.prepareStatement(sql);
-			int userid = u.getUserId();
+			//int userid = u.getUserId();
+			int userid = id;
 			statement.setInt(1, userid);
 			ResultSet result = statement.executeQuery();
 

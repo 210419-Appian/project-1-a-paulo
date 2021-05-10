@@ -143,6 +143,38 @@ public class UserDAOImpl implements UserDAO{
 		}
 		return null;
 	}
+
+	@Override
+	public User findUserByUsername(String username) {
+		try (Connection conn = ConnectionUtil.getConnection()) {
+
+			String sql = "SELECT * FROM users WHERE username = ?;";
+
+			PreparedStatement statement = conn.prepareStatement(sql);
+			
+			statement.setString(1, username);
+
+			ResultSet result = statement.executeQuery();
+
+			User u = new User();
+
+			while (result.next()) {
+				u.setUserId(result.getInt("userid"));
+				u.setUsername(result.getString("username"));
+				u.setPassword(result.getString("userpassword"));
+				u.setFirstName(result.getString("firstname"));
+				u.setLastName(result.getString("lastname"));
+				u.setEmail(result.getString("email"));
+				int roleInt = result.getInt("roleid");
+				u.setRole(rDao.findByRoleId(roleInt));
+			}
+
+			return u;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	
 	
