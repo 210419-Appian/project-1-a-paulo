@@ -1,8 +1,15 @@
 package com.revature.models;
 
-public class Account {
+import java.io.Serializable;
 
-    private int accountId; // primary key
+public class Account implements Serializable{
+
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private int accountId; // primary key
     private double balance;  // not null
     private User user;
     

@@ -26,7 +26,7 @@ public class LoginServlet extends HttpServlet{
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		UserDTO u = new UserDTO();
-		
+
 		BufferedReader reader = req.getReader();
 		StringBuilder sb = new StringBuilder();
 		String line = reader.readLine();
@@ -37,16 +37,17 @@ public class LoginServlet extends HttpServlet{
 		
 		String body = new String(sb);
 		u = om.readValue(body, UserDTO.class);
+		PrintWriter out = resp.getWriter();
 		
-		//PrintWriter out = resp.getWriter();
-		
-		//if(u.getUsername().equals((uDao.findUserByUsername(u.getUsername())).getUsername()) && u.getPassword().equals((uDao.findUserByUsername(u.getPassword()).getPassword()))) {
 		if(u.password.equals(uDao.findUserByUsername(u.username).getPassword())) {
 			HttpSession ses = req.getSession();  //create a session
 			ses.setAttribute("username", u.username);  //save username in the session
-			
+			String message = new String("message : You have logged in : " + u.username);
+			out.print(message);
 			resp.setStatus(200);
 		}else {
+			String message = new String("message : Invalid Credentials");
+			out.print(message);
 			resp.setStatus(400);
 		}
 		

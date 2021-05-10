@@ -1,8 +1,14 @@
 package com.revature.models;
 
-public class Role {
+import java.io.Serializable;
+
+public class Role implements Serializable{
 	
-    private int roleId; // primary key
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private int roleId; // primary key
     private String role; // not null, unique
 
     public Role(){

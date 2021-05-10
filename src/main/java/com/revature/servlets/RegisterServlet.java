@@ -2,6 +2,7 @@ package com.revature.servlets;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -43,6 +44,9 @@ public class RegisterServlet extends HttpServlet{
 		if (uService.register(u)) {
 			resp.setStatus(201);
 		}else {
+			PrintWriter out = resp.getWriter();
+			String message = new String("message : Invalid fields");
+			out.print(message);
 			resp.setStatus(400);
 		}
 

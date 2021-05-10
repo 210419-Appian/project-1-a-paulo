@@ -1,8 +1,14 @@
 package com.revature.models;
 
-public class AccountStatus {
+import java.io.Serializable;
 
-    private int statusId; // primary key
+public class AccountStatus implements Serializable{
+
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private int statusId; // primary key
     private String status; // not null, unique
 
     public AccountStatus(){

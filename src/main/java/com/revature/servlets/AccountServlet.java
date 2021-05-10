@@ -67,12 +67,6 @@ public class AccountServlet extends HttpServlet{
 	
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-		//String url = req.getRequestURI();
-		//String[] sections = url.split("/");
-		//String json = null;
-		
-	//	System.out.println(url);
-	//	System.out.println(sections.length);
 		
 		StringBuilder sb = new StringBuilder();
 		//The request object has a built in method to return an object that can read the body line by line. 
@@ -128,7 +122,7 @@ public class AccountServlet extends HttpServlet{
 		protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 			String url = req.getRequestURI();
 			String[] sections = url.split("/");
-			String json = null;
+			//String json = null;
 			
 			BalanceDTO bal = new BalanceDTO();
 			TransferDTO trans = new TransferDTO();
@@ -145,27 +139,28 @@ public class AccountServlet extends HttpServlet{
 			System.out.println(sections.length);
 			
 			String body = new String(sb);
-			//bal = om.readValue(body, BalanceDTO.class);
 			
+			PrintWriter out = resp.getWriter();
 			
 			if(sections[3].equalsIgnoreCase("withdraw")) {
 				bal = om.readValue(body, BalanceDTO.class);
 				//System.out.println(aService.findAccountsByUserId(bal.accountId).getBalance());
 				//System.out.println(bal.balance);
 				//System.out.println(aService.findAccountsByUserId(bal.accountId).toString());
-				//aService.findAccountsByUserId(bal.accountId).setBalance((aService.findAccountsByUserId(bal.accountId).getBalance()) - bal.balance);
-				//aService.updateAccountBalance(aService.findAccountsByUserId(bal.accountId));
 				Account a = aService.findAccountsById(bal.accountId);
 				a.setBalance((a.getBalance()) - bal.balance);
-				//aService.updateAccountBalance(a);
 				aService.updateAccountBalance(a,req);
+				String message = new String("message :" + bal.balance + " has been withdrawn from Account " + bal.accountId);
+				out.print(message);
+				
 			}
 			else if(sections[3].equalsIgnoreCase("deposit")) {
 				bal = om.readValue(body, BalanceDTO.class);
 				Account a = aService.findAccountsById(bal.accountId);
 				a.setBalance((a.getBalance()) + bal.balance);
-				//aService.findAccountsByUserId(bal.accountId).setBalance(aDao.findAccountsByUserId(bal.accountId).getBalance() + bal.balance);
 				aService.updateAccountBalance(a,req);
+				String message = new String("message :" + bal.balance + " has been deposited from Account " + bal.accountId);
+				out.print(message);
 			}
 			else if(sections[3].equalsIgnoreCase("transfer")) {
 				trans = om.readValue(body, TransferDTO.class);
@@ -173,13 +168,13 @@ public class AccountServlet extends HttpServlet{
 				Account b = aService.findAccountsById(trans.targetAccountId);
 				
 				//System.out.println(aDao.findAccountsByUserId(trans.targetAccountId).getBalance());
-				
-				//a.setBalance(aDao.findAccountsByUserId(trans.sourceAccountId).getBalance() - trans.amount);
-				//b.setBalance(aDao.findAccountsByUserId(trans.targetAccountId).getBalance() + trans.amount);
 				a.setBalance(a.getBalance() - trans.amount);
 				b.setBalance(b.getBalance() + trans.amount);
 				aService.updateAccountBalance(a,req);
 				aService.updateAccountBalance(b,req);
+				String message = new String("message :" + trans.amount + " has been transferred from Account " + trans.sourceAccountId +
+						"to Account" + trans.targetAccountId);
+				out.print(message);
 			}
 		}
 		

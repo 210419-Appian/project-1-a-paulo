@@ -1,8 +1,14 @@
 package com.revature.models;
 
-public class AccountType {
+import java.io.Serializable;
 
-    private int typeId; // primary key
+public class AccountType implements Serializable{
+
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private int typeId; // primary key
     private String type; // not null, unique
 
     public AccountType(){

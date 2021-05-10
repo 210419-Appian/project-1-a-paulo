@@ -1,6 +1,11 @@
 package com.revature.models;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+	
 	private int userId; // primary key
     private String username; // not null, unique
     private String password; // not null
@@ -9,8 +14,6 @@ public class User {
     private String email; // not null
     private Role role;
 
-    
-    private static final long serialVersionUID = 1L;
 
     public User() {
         super();
