@@ -25,13 +25,13 @@ To-do list :
 - Password hashing
 ## _Getting Started_
 
--Install Java SE Development Kit 8
+- Install Java SE Development Kit 8
 >Verify that you have installed Java by using "java -version" in command prompt.
 
--Install Spring Tool Suite 4
--Install Maven
--Install DBeaver
--Install Apache Tomcat
+- Install Spring Tool Suite 4
+- Install Maven
+- Install DBeaver
+- Install Apache Tomcat
 You can use Postman through the web-browser application.
 ## _Usage_
 After project installation and relational-database setup, run the project on your appropriate server.  Use Postman to send requests (GET, POST, and PULL) to access and update your DBeaver database.  Postman has a simple and easy to use interface to test RESTful endpoints.
